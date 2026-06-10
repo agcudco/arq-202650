@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
 
 export enum Clasificacion {
   ELECTRICO = 'Eléctrico',
@@ -7,6 +7,7 @@ export enum Clasificacion {
   DIESEL = 'Diésel',
 }
 
+@Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'tipo' } })
 export abstract class Vehiculo {
   @PrimaryGeneratedColumn('uuid')

@@ -15,7 +15,7 @@ export class FactoryVehiculos {
         const moto = new Motocicleta();
         Object.assign(moto, dto.datos);
         return moto;
-      case 'camion':
+      case 'camioneta':
         const camion = new Camioneta();
         Object.assign(camion, dto.datos);
         return camion;
