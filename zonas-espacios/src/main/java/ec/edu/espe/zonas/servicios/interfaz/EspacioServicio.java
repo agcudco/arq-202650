@@ -14,13 +14,15 @@ public interface EspacioServicio {
 
     EspacioResponseDto crearEspacio(EspacioRequestDto requestDto);
 
-    EspacioResponseDto actualizarEspacio(EspacioRequestDto requestDto);
+    EspacioResponseDto actualizarEspacio(EspacioRequestDto requestDto, UUID id);
 
-    void eliminarEspacio(String id);
+    void eliminarEspacio(UUID id);
 
     EspacioResponseDto cambiarEstado(UUID id, EstadoEspacio estado);
 
     List<EspacioResponseDto> obtenerEspaciosPorEstado(String estado);
 
     List<EspacioResponseDto> obtenerEspaciosPorZonaEstado(UUID idZona, String estado);
+
+    List<EspacioResponseDto> obtenerEspaciosPorZona(UUID idZona);
 }
