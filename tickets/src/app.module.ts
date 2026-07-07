@@ -13,9 +13,9 @@ import { Ticket } from './tickets/entities/ticket.entity';
         type: 'postgres',
         host: configService.get('DB_HOST'),
         port: configService.get('DB_PORT'),
-        username: configService.get('DB_USER'),
+        username: configService.get('DB_USUARIO'),
         password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
+        database: configService.get('DB_NOMBRE'),
         entities: [Ticket],
         synchronize: true, // solo desarrollo
         logging: true,

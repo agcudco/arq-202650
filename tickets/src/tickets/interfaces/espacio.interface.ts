@@ -4,4 +4,5 @@ export interface Espacio {
   zona: string;
   disponible: boolean;
   tipo?: string;
+  estado: string;
 }

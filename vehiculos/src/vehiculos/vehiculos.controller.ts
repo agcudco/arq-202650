@@ -24,7 +24,7 @@ export class VehiculosController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateVehiculoDto: UpdateVehiculoDto) {
-    return this.vehiculosService.update(+id, updateVehiculoDto);
+    return this.vehiculosService.update(id, updateVehiculoDto);
   }
 
   @Delete(':id')

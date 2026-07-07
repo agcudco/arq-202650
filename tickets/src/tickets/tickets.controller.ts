@@ -19,12 +19,12 @@ export class TicketsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ticketsService.findOne(+id);
+    return this.ticketsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(+id, updateTicketDto);
+    return this.ticketsService.cerrarTicket(id, updateTicketDto);
   }
 
   @Delete(':id')

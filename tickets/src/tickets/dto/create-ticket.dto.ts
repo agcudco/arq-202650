@@ -12,4 +12,9 @@ export class CreateTicketDto {
   @IsUUID()
   @IsNotEmpty()
   idEspacio!: string;
+
+
+  @IsUUID()
+  @IsNotEmpty()
+  zona!: string;
 }

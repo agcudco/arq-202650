@@ -3,7 +3,7 @@ import { CreateTicketDto } from './create-ticket.dto';
 import { IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateTicketDto extends PartialType(CreateTicketDto) {
-  activo!: boolean;
+  activo?: boolean;
 
   @IsNumber()
   @IsOptional()
