@@ -1,0 +1,11 @@
+# Iniciar todo
+.\config\start.ps1
+
+# Ver estado
+.\config\status.ps1
+
+# Ver logs
+Get-Content .\config\logs\vehiculos.log -Wait
+
+# Detener todo
+.\config\stop.ps1

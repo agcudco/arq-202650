@@ -1,19 +1,17 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql_parkin
-    restart: always
+  postgres:
+    image: postgres:latest
+    container_name: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: parkin_bd
-      MYSQL_USER: parkin_user
-      MYSQL_PASSWORD: parkin_pass
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty123
+      POSTGRES_DB: parkin_bd
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mysql_data:
+  postgres_data:
