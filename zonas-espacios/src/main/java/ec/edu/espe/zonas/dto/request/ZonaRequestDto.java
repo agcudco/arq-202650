@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ZonaRequestDto {
 
-    @NotNull(message = "El nombre de la zona no puede ser nulo")
+    
     @NotBlank(message = "El nombre de la zona no puede estar vacío")
     @Size(max = 50, message = "El nombre de la zona no puede tener más de 10 caracteres")
     private String nombre;

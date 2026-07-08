@@ -17,14 +17,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class EspacioRequestDto {
-    
+
     private String descripcion;
 
     @NotNull(message = "El tipo de espacio no puede ser nulo")
-    @NotBlank(message = "El tipo de espacio no puede estar vacío")
-    private TipoEspacio tipo;
+    private TipoEspacio tipo; // Enum, no lleva @NotBlank
 
     @NotNull(message = "El ID de la zona no puede ser nulo")
-    @NotBlank(message = "El ID de la zona no puede estar vacío")
-    private UUID idZona;
+    private UUID idZona; // UUID, solo @NotNull
 }
