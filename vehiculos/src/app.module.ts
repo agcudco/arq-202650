@@ -6,6 +6,7 @@ import { Vehiculo } from './vehiculos/entities/vehiculo.entity';
 import { Auto } from './vehiculos/entities/auto.entity';
 import { Motocicleta } from './vehiculos/entities/motocicleta.entity';
 import { Camioneta } from './vehiculos/entities/camioneta.entity';
+import { SeedModule } from './vehiculos/seed/seed.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Camioneta } from './vehiculos/entities/camioneta.entity';
       inject: [ConfigService],
     }),
     VehiculosModule,
+    SeedModule,
   ],
 })
 export class AppModule {}

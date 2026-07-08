@@ -8,12 +8,12 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "person")
-@Setter
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Person {
 
     @Id

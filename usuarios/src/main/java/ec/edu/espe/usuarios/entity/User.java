@@ -10,12 +10,12 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Setter
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
     @Id

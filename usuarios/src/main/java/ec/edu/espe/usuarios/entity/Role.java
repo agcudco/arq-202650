@@ -10,12 +10,12 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "role")
-@Setter
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role {
 
     @Id

@@ -14,5 +14,13 @@ public interface UserService {
 
     UserResponse getUserById(UUID id);
 
-    UserResponse assigneRole(UUID userId, UUID roleId);
+    UserResponse updateUser(UUID id, UserCreateRequest userRequest);
+
+    void deleteUser(UUID id); // desactiva lógicamente
+
+    UserResponse assignRole(UUID userId, UUID roleId);
+
+    UserResponse removeRoleFromUser(UUID userId, UUID roleId);
+
+     UserResponse getUserByDni(String dni);
 }

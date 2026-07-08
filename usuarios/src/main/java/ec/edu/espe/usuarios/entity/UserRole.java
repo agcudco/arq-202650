@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_role")
-@Setter
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserRole {
 
     @EmbeddedId

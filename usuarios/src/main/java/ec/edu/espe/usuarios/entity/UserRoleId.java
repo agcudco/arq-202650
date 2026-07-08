@@ -8,8 +8,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Embeddable
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode

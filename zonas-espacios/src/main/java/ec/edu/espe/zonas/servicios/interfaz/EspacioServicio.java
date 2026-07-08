@@ -25,4 +25,12 @@ public interface EspacioServicio {
     List<EspacioResponseDto> obtenerEspaciosPorZonaEstado(UUID idZona, String estado);
 
     List<EspacioResponseDto> obtenerEspaciosPorZona(UUID idZona);
+
+    /**
+     * Busca un espacio por su ID (UUID)
+     * @param id ID del espacio
+     * @return EspacioResponseDto con los datos del espacio
+     * @throws RuntimeException si no se encuentra el espacio
+     */
+    EspacioResponseDto obtenerEspacioPorId(UUID id);
 }

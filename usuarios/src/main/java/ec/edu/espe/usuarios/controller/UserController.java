@@ -4,7 +4,7 @@ import ec.edu.espe.usuarios.dto.request.UserCreateRequest;
 import ec.edu.espe.usuarios.dto.response.UserResponse;
 import ec.edu.espe.usuarios.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,28 +14,53 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @PostMapping("/")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserCreateRequest request) {
-        UserResponse response = userService.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
-    //formato uuid: 8-4-4-4-12
-    //localhost:8080/api/users/{userId}/roles/{roleId}
-    //localhost:8080/api/users/8be4df61-93ca-11d2-aa0d-00e098032b8c/roles/8be4df61-93ca-11d5-aa0d-00e098032b8c
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id,
+            @Valid @RequestBody UserCreateRequest request) {
+        return ResponseEntity.ok(userService.updateUser(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Asignar rol
     @PostMapping("/{userId}/roles/{roleId}")
-    public ResponseEntity<UserResponse> assigneRoleUser(@PathVariable UUID userId, @PathVariable UUID roleId) {
-        return ResponseEntity.ok(userService.assigneRole(userId, roleId));
+    public ResponseEntity<UserResponse> assignRole(@PathVariable UUID userId, @PathVariable UUID roleId) {
+        return ResponseEntity.ok(userService.assignRole(userId, roleId));
     }
 
+    // Desasignar rol
+    @DeleteMapping("/{userId}/roles/{roleId}")
+    public ResponseEntity<UserResponse> removeRole(@PathVariable UUID userId, @PathVariable UUID roleId) {
+        return ResponseEntity.ok(userService.removeRoleFromUser(userId, roleId));
+    }
+
+    // NUEVO ENDPOINT: Buscar por DNI
+    @GetMapping("/dni/{dni}")
+    public ResponseEntity<UserResponse> getUserByDni(@PathVariable String dni) {
+        return ResponseEntity.ok(userService.getUserByDni(dni));
+    }
 }

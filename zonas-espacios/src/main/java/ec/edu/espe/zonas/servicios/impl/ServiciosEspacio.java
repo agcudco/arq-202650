@@ -184,10 +184,23 @@ public class ServiciosEspacio implements EspacioServicio {
     @Transactional(readOnly = true)
     public List<EspacioResponseDto> obtenerEspaciosPorZona(UUID idZona) {
         log.info("Obteniendo espacios para zona ID: {}", idZona);
-        // Opcional: verificar que la zona exista, pero el repositorio devolverá lista vacía si no hay espacios
+        // Opcional: verificar que la zona exista, pero el repositorio devolverá lista
+        // vacía si no hay espacios
         return espacioRepositorio.findByZonaId(idZona)
                 .stream()
                 .map(this::convertirAResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public EspacioResponseDto obtenerEspacioPorId(UUID id) {
+        log.info("Buscando espacio con ID: {}", id);
+        Espacio espacio = espacioRepositorio.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Espacio no encontrado con ID: {}", id);
+                    return new RuntimeException("Espacio no encontrado con ID: " + id);
+                });
+        return convertirAResponseDto(espacio);
     }
 }

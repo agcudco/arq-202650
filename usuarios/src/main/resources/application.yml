@@ -16,7 +16,19 @@ spring:
         format_sql: true
     show-sql: true
 
+  profiles:
+    active: dev
+
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql: trace
+
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
