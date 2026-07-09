@@ -15,6 +15,7 @@ import { Vehiculo } from './interfaces/vehiculo.interface';
 import { Espacio } from './interfaces/espacio.interface';
 import { UserResponse } from './interfaces/user-response.interface';
 import { HttpClientService } from './common/httpl-client.service';
+import { SseService } from 'src/sse/sse.service';
 
 @Injectable()
 export class TicketsService {
@@ -29,6 +30,7 @@ export class TicketsService {
     private ticketRepository: Repository<Ticket>,
     private httpClient: HttpClientService,
     private configService: ConfigService,
+    private readonly sseService: SseService,
   ) {
     this.personaUrl = this.configService.get('PERSONA_URL')!;
     this.espacioUrl = this.configService.get('ESPACIO_URL')!;
@@ -121,15 +123,17 @@ export class TicketsService {
     );
 
     // 6. Actualizar estado del espacio a OCUPADO (asíncrono)
-    this.actualizarEstadoEspacio(createTicketDto.idEspacio, 'OCUPADO').catch(
-      (err) => {
-        const errorMsg =
-          err instanceof Error ? err.message : 'Error desconocido';
-        this.logger.error(
-          `❌ Error al actualizar espacio a OCUPADO: ${errorMsg}`,
-        );
-      },
-    );
+    this.actualizarEstadoEspacio(createTicketDto.idEspacio, 'OCUPADO')
+      .then(() => {
+        //emitir el espacio actualizado
+        this.sseService.emitEvent('espacio-actualizado', {
+          id: createTicketDto.idEspacio,
+          estado: 'OCUPADO',
+        });
+      })
+      .catch((err) => {
+        this.logger.error('Error al emitir evento SSE', err);
+      });
 
     return ticketGuardado;
   }
@@ -191,7 +195,7 @@ export class TicketsService {
 
     const fechaSalida = new Date();
     const horas = this.calcularHoras(ticket.fechaHoraIngreso, fechaSalida);
-    const costo = Math.round((horas * this.tarifaPorHora) * 100) / 100;
+    const costo = Math.round(horas * this.tarifaPorHora * 100) / 100;
 
     ticket.activo = false;
     ticket.fechaHoraSalida = fechaSalida;
@@ -203,15 +207,16 @@ export class TicketsService {
     );
 
     // Actualizar estado del espacio a DISPONIBLE
-    this.actualizarEstadoEspacio(ticket.idEspacio, 'DISPONIBLE').catch(
-      (err) => {
-        const errorMsg =
-          err instanceof Error ? err.message : 'Error desconocido';
-        this.logger.error(
-          `❌ Error al actualizar espacio a DISPONIBLE: ${errorMsg}`,
-        );
-      },
-    );
+    this.actualizarEstadoEspacio(ticket.idEspacio, 'DISPONIBLE')
+      .then(() => {
+        this.sseService.emitEvent('espacio-actualizado', {
+          id: ticket.idEspacio,
+          estado: 'DISPONIBLE',
+        });
+      })
+      .catch((err) => {
+        this.logger.error('Error al emitir el evento SSE: ', err);
+      });
 
     return closedTicket;
   }

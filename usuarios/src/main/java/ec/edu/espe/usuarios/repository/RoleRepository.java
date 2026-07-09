@@ -1,11 +1,11 @@
 package ec.edu.espe.usuarios.repository;
 
-import ec.edu.espe.usuarios.entity.Role;
-import ec.edu.espe.usuarios.entity.UserRole;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import ec.edu.espe.usuarios.entity.Role;
 
 public interface RoleRepository extends JpaRepository<Role, UUID> {
     boolean existsByName(String name);

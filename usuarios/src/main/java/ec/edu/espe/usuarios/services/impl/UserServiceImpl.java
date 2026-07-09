@@ -1,24 +1,31 @@
 package ec.edu.espe.usuarios.services.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import ec.edu.espe.usuarios.dto.request.LoginRequest;
 import ec.edu.espe.usuarios.dto.request.UserCreateRequest;
 import ec.edu.espe.usuarios.dto.response.PersonResponse;
 import ec.edu.espe.usuarios.dto.response.UserResponse;
-import ec.edu.espe.usuarios.entity.*;
+import ec.edu.espe.usuarios.entity.Person;
+import ec.edu.espe.usuarios.entity.Role;
+import ec.edu.espe.usuarios.entity.User;
+import ec.edu.espe.usuarios.entity.UserRole;
+import ec.edu.espe.usuarios.entity.UserRoleId;
 import ec.edu.espe.usuarios.repository.PersonRepository;
 import ec.edu.espe.usuarios.repository.RoleRepository;
 import ec.edu.espe.usuarios.repository.UserRepository;
 import ec.edu.espe.usuarios.repository.UserRoleRepository;
 import ec.edu.espe.usuarios.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -297,4 +304,40 @@ public class UserServiceImpl implements UserService {
 
         return mapToUserResponse(user);
     }
+
+    @Override
+    public UserResponse login(LoginRequest loginRequest) {
+        String identifier = loginRequest.getUsernameOrDni();
+        String password = loginRequest.getPassword();
+
+        // 1. Buscar por DNI
+        Optional<Person> personOpt = personRepository.findByDni(identifier);
+        User user = null;
+        if (personOpt.isPresent()) {
+            user = userRepository.findById(personOpt.get().getId())
+                    .orElse(null);
+        }
+
+        // 2. Si no se encontró por DNI, buscar por username
+        if (user == null) {
+            List<User> users = userRepository.findByUsername(identifier);
+            if (!users.isEmpty()) {
+                user = users.get(0);
+            }
+        }
+
+        // 3. Si no existe, lanzar excepción
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas");
+        }
+
+        // 4. Verificar contraseña (texto plano – se recomienda bcrypt en producción)
+        if (!user.getPasswordHash().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas");
+        }
+
+        // 5. Devolver respuesta del usuario (con roles)
+        return mapToUserResponse(user);
+    }
+
 }

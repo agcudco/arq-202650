@@ -1,11 +1,11 @@
 package ec.edu.espe.usuarios.services;
 
-import ec.edu.espe.usuarios.dto.request.UserCreateRequest;
-import ec.edu.espe.usuarios.dto.response.UserResponse;
-import ec.edu.espe.usuarios.entity.User;
-
 import java.util.List;
 import java.util.UUID;
+
+import ec.edu.espe.usuarios.dto.request.LoginRequest;
+import ec.edu.espe.usuarios.dto.request.UserCreateRequest;
+import ec.edu.espe.usuarios.dto.response.UserResponse;
 
 public interface UserService {
     UserResponse createUser(UserCreateRequest userRequest);
@@ -22,5 +22,7 @@ public interface UserService {
 
     UserResponse removeRoleFromUser(UUID userId, UUID roleId);
 
-     UserResponse getUserByDni(String dni);
+    UserResponse getUserByDni(String dni);
+
+    UserResponse login(LoginRequest loginRequest);
 }
